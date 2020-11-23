@@ -1,0 +1,254 @@
+Single Page App
+    Only one backend route that returns HTML
+    Javascripty used to dynamically update the DOM
+
+React
+    Frontend library for building/managing UI
+    The V in MVC
+    As the user interfaces with the app, components react and update if they need to
+    Breaks view up into modular component
+
+Why React?
+    Abstracts away low-level DOM manipulation allowing developer to focus on how app should look and behave
+    JSX - easily incorporate JS into HTMl (similar to html.erb)
+    Virtual DOM
+
+JSX
+    Syntax extension to JS 
+    Produces React elements which can be DOM elements or components
+    Use camelCase naming convention
+    May use self closing tags if tag is empty
+    
+    Use {} to embed and interpolate JS expressions
+    const name = 'Josh Perez';
+    const element = <h1>Hello, {name}</h1>
+    
+    Can be used inside of if statements and for loops
+    Use curly braces to embed a JS expression in an attribute
+
+    const element = <img src={user.avatarURL}></img>;
+
+NPM
+    Node Package Manager(NPM) is a package manager and software registery
+    JS's packages.json is simliar to Ruby's Gemfile
+    Use to download various dependencies
+
+Setting up your project Demo
+    1. npm init in your project directory
+        npm init -y (automatic... default package json)
+        npm init (manual)
+    2. create index.html
+    3. package.json
+        a. npm install webpack
+        b. npm install -D webpack-cli
+            package-lock.json -> shows what we installed 
+    4. create webpack.config.js (here's a template below)
+
+        const path = require('path');
+
+        module.exports = {
+            entry: './frontend/entry.jsx',
+            output: {
+                path: path.resolve(__dirname),
+                filename: 'bundle.js'
+            },
+            devtool: 'source-map',
+            resolve: {
+                extensions: [".js", ".jsx", "*"]
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.jsx?$/,
+                        exclude: /(node_modules)/,
+                        use: {
+                            loader: 'babel-loader',
+                            options: {
+                                presets: ['@babel/env', '@babel/react']
+                            }
+                        },
+                    }
+                ]
+            },
+        };
+    5. Make the frontend folder
+        inside the folder make entry.jsx 
+        console log something to test
+
+    6. In the index.html, <script src="bundle.js"></script> in the header
+
+    7. In the terminal install these things
+        npm install @babel/core @babel/preset-env @babel/preset-react babel-loader react react-dom
+
+    8. Add this to "scripts" in the package.json
+        "start": "webpack --watch --mode=development"
+
+    9. Run npm start in the terminal
+
+    10. Create .gitignore
+        node_modules
+        bundle.js
+        bundle.js.map
+
+React Components (what)
+    the basic building block of a React app
+    Encapsulated pieces of UI containing both the HTML and the means to...
+
+React Components (how)
+    Accepts a single "props" object and returns a React element
+    Created via either clasess or functions
+    Class components must have a render functions
+        The render function is product of state & props
+    In functional components, the function is the render function
+
+State & props
+    State refers to information that the component itself manages (personal information)
+    Props refer to information that the component receives from a parent component or passes down to a child component (public information)
+        you never want to modify props
+    
+React Component Philosophy
+    Single Responsibility Principle
+    Pure Functions (with respect to props)
+
+React components will re-render when their state or props change
+
+    Class Component
+
+        class MyComponent extends React.Component {
+            constructor(props) {
+                super(props);
+            }
+
+            render() {
+                return (
+                    <div className= 'quotes>
+                        <h1 id="title">I love JavaScript</h1>
+                    </div>
+                );
+            }
+        }
+
+    Functional Component
+
+        const Mycomponent = props => {
+            return (
+                <div className="quotes">
+                    <h1 id="title">I love JavaScript</h1>
+                </div>
+            )
+        }
+
+When to use Class Components
+    The component needs to maintain its own state 
+    The component uses React lifecycle methods
+    ...
+
+When to use Funcitonal Components
+    If you don't need to track local state
+    If all your class component has is a render function, it should be a funcitonal component
+
+Using a React Component
+    component name must be capitalized and is rendered as follows
+    <MyComponent />     (right way)
+    <myComponent />     (wrong way)
+
+Render
+    react calls render for us
+    typically will return react elements written using JSX
+        <div>...</div> or <MyComponents />
+        can only return one root react element
+    Can also return null if component is in state where it should not display
+    Can also return booleans, arrays, strings, and numbers, but less common
+
+Valid Render
+    function GoodComponent = (props) => {
+        return (
+            <div>
+                <h1> Hello there!</h1>
+                <p>This is good jsx</P>
+            </div?
+        )
+    }
+
+Invalid Render
+    function GoodComponent = (props) => {
+        return (
+            <h1> Hello there!</h1>
+            <p>This is not good jsx</P>
+        )
+    }
+
+Initializing State
+    State is initialized inside the constructor function of a class component as follows:
+
+    class MyComponent extends React.Component {
+        constructor(props){
+            super(props);
+            this.state = {
+                //... properties you want in state
+            };
+        }
+        //...
+    }
+
+    This i s the only time you say this.state = ...
+    State is an object with key value pairs
+
+Updating State
+    Always update state using this.setState
+    Updating state is asynchronous
+    this.setState has two parameters
+        an object that will be merged into the old state
+        (optional) a callback to execute after the new state is set
+
+    //this.state = { text: 'hello', cat: 'meow' }
+    this.setState({
+        text: 'bye'
+    }, () => console.log(this.state))
+
+    //output: {text: 'bye', cat: 'meow'}
+
+Props
+    Passed to the component when it is instantiated
+    Referenced by this.props or props (class vs functional)
+    Do not tie parts of props to a component's state
+    Component should never directly modify its props
+
+    <MyComponent name="Ronil" hobby="reacting" />
+
+    //somewhere in MyComponent (if class)
+    this.props.name; // => "Ronil"
+
+    //if functional component, likely
+    props.name; // => "Ronil"
+
+Handling Events
+    React events named using camelCase
+    Provide event listener when element is rendered
+        No need to call addEventListener
+    Pass a function as event handler
+
+    <button onClick={this.handleClick}>
+        Click
+    </button>
+
+DEMO
+
+Lifecycle methods
+
+Mounting
+    constructor()
+    render()
+    componentDidMount()
+        good place to call AJAX requests, set subscriptions like setInterval
+
+Updating
+    shouldComponentUpdate()
+    render()
+    componentDidUpdate(prevProps, prevState)
+
+Unmounting
+    componentWillUnmount()
+        remove event listeners, clearInterval, execute
+
+
