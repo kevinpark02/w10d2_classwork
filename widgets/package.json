@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^5.6.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.2.0"
+  }
 }
